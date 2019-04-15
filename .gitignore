@@ -1,3 +1,5 @@
+./src/key.js
+
 # dependencies
 /node_modules
 .idea
