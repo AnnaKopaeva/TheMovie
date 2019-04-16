@@ -1,0 +1,15 @@
+.movies_list {
+
+}
+
+.movie_item {
+  display: inline-block;
+  position: relative;
+}
+
+.movie_title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+}
