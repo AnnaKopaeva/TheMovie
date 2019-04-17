@@ -2,9 +2,11 @@ export const getListPages = (page, totalPages) => {
   const listPages = [];
 
   if (page < 5) {
+    // todo: don't use hard code values
     for (let i = 1; i <= 7; i++) {
       listPages.push(i);
     }
+    // todo: 123456767
     listPages.push('...', totalPages - 1, totalPages);
   } else if (page >= 5 && page < 8) {
     for (let i = 1; i <= page; i++) {
@@ -28,3 +30,7 @@ export const getListPages = (page, totalPages) => {
 
   return listPages;
 };
+
+// todo: add a simple doc string for function
+// todo: add a test
+// todo: move '...' to argument separator

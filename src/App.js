@@ -1,59 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-import { getMoviesList } from './utils/updateMovieUrl';
-import MovieList from './components/MovieList';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Pagination from './components/Pagination';
-import { getTopMovies } from './actions';
+import MainRouter from './routes';
+import { reducer } from './reducers';
 
 // styles
 import './styles/reset.css';
 import './styles/normalize.css';
 
-class App extends Component {
-  componentDidMount() {
-    this.props.getTopMovies(1);
-  }
+// constants
+const store = createStore(reducer, applyMiddleware(thunk));
 
-  render() {
-    const { data } = this.props;
-    if (data && data.results && Array.isArray(data.results))  {
-      const movies = getMoviesList(data);
-      return (
-        <div>
-          <Header />
-          {movies
-            ? <MovieList movies={movies} />
-            : null}
-          {movies
-            ? <Pagination page={data.page} totalPages={data.total_pages} />
-            : null}
-          <Footer />
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-};
 
-const mapStateToProps = state => {
-  return ({
-    data: state.data.data[state.data.activeSortType],
-  });
-};
+export const App = () => (
+  <Provider store={store}>
+    <MainRouter />
+  </Provider>
+);
 
-App.propTypes = {
-  data: PropTypes.shape({
-    page: PropTypes.number,
-    results: PropTypes.arrayOf(PropTypes.object),
-    total_pages: PropTypes.number,
-    total_results: PropTypes.number,
-  }),
-  getTopMovies: PropTypes.func,
-};
-
-export default connect(mapStateToProps, { getTopMovies })(App);
+export default App;

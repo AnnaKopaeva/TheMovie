@@ -1,27 +1,14 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+
+// styles
+import s from './styles/Footer.module.scss';
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className={s.root}>
       Footer
     </div>
   );
 };
 
-// const mapStateToProps = state => ({
-//   data: state.data.data,
-// });
-
-Footer.propTypes = {
-  // movies: PropTypes.shape({
-  //   page: PropTypes.number,
-  //   results: PropTypes.arrayOf(PropTypes.object),
-  //   total_pages: PropTypes.number,
-  //   total_results: PropTypes.number,
-  // }),
-};
-
 export default Footer;
-// export default connect(mapStateToProps, {})(Footer);

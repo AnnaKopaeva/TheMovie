@@ -1,44 +1,58 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
 
 import { getListPages } from '../../utils/getListPages';
 
 // styles
 import s from './styles/Pagination.module.scss';
-import { getTopMovies } from '../../actions';
 
-const Pagination = ({ page, totalPages, getTopMovies }) => {
-  const listPages = getListPages(page, totalPages);
-  const listOfNavigation = listPages.map((item, key) => {
-    const navigationItem = classNames(s.navigationItem, {
-      [s.navigationActiveItem]: item === page,
+
+class Pagination extends Component {
+  get getListPages() {
+    const {
+      page, totalPages, changePage,
+    } = this.props;
+    const listPages = getListPages(page, totalPages);
+    return listPages.map((item, key) => {
+      const navigationItem = classNames(s.navigationItem, {
+        [s.navigationActiveItem]: item === page,
+      });
+      return (
+        <li
+          key={key}
+          className={navigationItem}
+        >
+          <button
+            onClick={() => changePage(item)}
+          >
+            {item}
+          </button>
+        </li>
+      );
     });
-    return (
-      <li
-        key={key}
-        className={navigationItem}
-        onClick={() => getTopMovies(item)}
-      >
-        {item}
-      </li>
-    );
-  });
+  };
 
-  return (
-    <div className={s.pagination}>
-      <ul>
-        {listOfNavigation}
-      </ul>
-    </div>
-  );
+  render() {
+    return (
+      <div className={s.pagination}>
+        <ul>
+          {this.getListPages}
+        </ul>
+      </div>
+    );
+  }
+}
+
+Pagination.defaultProps = {
+  page: 1,
+  totalPages: 1,
 };
 
 Pagination.propTypes = {
   page: PropTypes.number,
   totalPages: PropTypes.number,
-  getTopMovies: PropTypes.func,
+  changePage: PropTypes.func,
 };
 
-export default connect(null, { getTopMovies })(Pagination);
+export default Pagination;

@@ -1,19 +1,12 @@
 import axios from 'axios';
-import { FETCH_TOP_RATED_DATA, FETCH_LATEST_DATA } from './types';
+import { FETCH_DATA } from './actionTypes';
 import { MOVIE_DB_API_KEY } from '../key';
 
-const MOVIE_DB_BASE_URL = 'https://api.themoviedb.org/3';
+const MOVIE_DB_BASE_URL = 'https://api.themoviedb.org/3/movie';
 
-export const fetchTopRatedData = (data) => {
+export const fetchData = (data) => {
   return {
-    type: FETCH_TOP_RATED_DATA,
-    data,
-  };
-};
-
-export const fetchLatestData = (data) => {
-  return {
-    type: FETCH_LATEST_DATA,
+    type: FETCH_DATA,
     data,
   };
 };
@@ -27,41 +20,15 @@ const createMovieDbUrl = (relativeUrl, queryParams) => {
   return baseUrl;
 };
 
-export const getTopMovies = (page) => {
+export const getMovies = (page = 1, link = '/popular') => {
   return function action(dispatch) {
     // add loader
-    const request = axios.get(createMovieDbUrl('/movie/top_rated', { page }));
+    const request = axios.get(createMovieDbUrl(link, { page }));
 
     return request.then((response) => {
-      dispatch(fetchTopRatedData(response.data));
+      dispatch(fetchData(response.data));
     }).catch((error) => {
       throw (error);
     });
   };
 };
-
-export const getLatestMovies = (page) => {
-  return function action(dispatch) {
-    // add loader
-    const request = axios.get(createMovieDbUrl('/movie/latest', { page }));
-
-    return request.then((response) => {
-      dispatch(fetchLatestData(response.data));
-    }).catch((error) => {
-      throw (error);
-    });
-  };
-};
-
-// export const searchMovies = async ({ page, query}) => {
-//   const fullUrl = createMovieDbUrl('/search/movie', {
-//     page,
-//     query,
-//   });
-//   return fetch(fullUrl);
-// };
-//
-// export const getMovieDetails = async ({movieId}) => {
-//   const fullUrl = createMovieDbUrl(`/movie/${movieId}`);
-//   return fetch(fullUrl);
-// };
