@@ -24,6 +24,7 @@ class Pagination extends Component {
           className={navigationItem}
         >
           <button
+            className={s.navigationButton}
             onClick={() => changePage(item)}
           >
             {item}

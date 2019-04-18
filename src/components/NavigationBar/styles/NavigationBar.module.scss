@@ -1,3 +1,45 @@
-.root {
+@import '../../../styles/const';
 
+.wrapper {
+  max-width: $desktopMinWidth;
+  margin: 20px 60px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sortItem {
+  width: 300px;
+  display: inline-block;
+  margin-right: 20px;
+  text-align: left;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (max-width: $desktopMinWidth) {
+  .wrapper {
+    max-width: $tabletMinWidth;
+  }
+}
+
+@media only screen and (max-width: $tabletMinWidth) {
+  .wrapper {
+    margin: 20px;
+    max-width: $mobileMinWidth;
+    flex-wrap: wrap;
+  }
+
+  .sortItem {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: $mobileMinWidth) {
+  .wrapper {
+    max-width: $minWidth;
+  }
 }

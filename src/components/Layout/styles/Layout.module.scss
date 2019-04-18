@@ -1,10 +1,31 @@
+@import '../../../styles/const';
+
 .root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-
 .main {
   flex: 1;
+  max-width: $desktopMinWidth;
+  margin: auto;
+}
+
+@media only screen and (max-width: $desktopMinWidth) {
+  .main {
+    max-width: $tabletMinWidth;
+  }
+}
+
+@media only screen and (max-width: $tabletMinWidth) {
+  .main {
+    max-width: $mobileMinWidth;
+  }
+}
+
+@media only screen and (max-width: $mobileMinWidth) {
+  .main {
+    max-width: $minWidth;
+  }
 }

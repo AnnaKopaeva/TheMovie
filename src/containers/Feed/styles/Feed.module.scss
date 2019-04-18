@@ -1,0 +1,11 @@
+@import '../../../styles/const';
+
+.content {
+  text-align: center;
+}
+
+.error {
+  color: $mainColor;
+  font-size: 24px;
+  margin-top: 40px;
+}

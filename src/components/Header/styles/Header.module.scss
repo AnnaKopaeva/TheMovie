@@ -1,5 +1,12 @@
+@import '../../../styles/const';
+
 .root {
   height: 100px;
-  background: black;
+  background: $mainColor;
   color: white;
+}
+
+.logo {
+  padding: 10px 20px;
+  height: 80px;
 }

@@ -1,5 +1,64 @@
+@import '../../../styles/const';
+
 .root {
-  height: 100px;
-  background: black;
+  width: 100%;
+  background: $mainColor;
   color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.content {
+  max-width: $desktopMinWidth;
+  padding: 40px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.listInfo {
+  display: inline-block;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.listItem {
+  margin-bottom: 10px;
+
+  span {
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 5px;
+  }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+.link {
+  color: white;
+}
+
+@media only screen and (max-width: $desktopMinWidth) {
+  .content {
+    max-width: $tabletMinWidth;
+  }
+}
+
+@media only screen and (max-width: $tabletMinWidth) {
+  .content {
+    max-width: $mobileMinWidth;
+  }
+}
+
+@media only screen and (max-width: $mobileMinWidth) {
+  .content {
+    max-width: $minWidth;
+    padding: 20px 10px;
+  }
 }

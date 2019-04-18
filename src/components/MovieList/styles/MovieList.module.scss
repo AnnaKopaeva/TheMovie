@@ -1,21 +1,46 @@
+@import '../../../styles/const';
+
 .movies_list {
   margin: 20px auto;
-  max-width: 1200px;
 }
 
 .movie_item {
+  width: 200px;
+  height: 300px;
+  padding: 10px;
   display: inline-block;
   position: relative;
 
   img {
-    width: 200px;
-    padding: 10px;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .movie_detail {
+      display: block;
+    }
   }
 }
 
-.movie_title {
+.movie_detail {
+  display: none;
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 10px;
+  left: 10px;
+  height: 40px;
+  line-height: 40px;
+  width: 200px;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.movie_title {
+  font-family: 'Roboto', sans-serif;
   color: white;
+}
+
+@media only screen and (max-width: $desktopMinWidth) {
+
 }
