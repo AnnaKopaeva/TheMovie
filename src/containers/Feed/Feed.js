@@ -15,6 +15,7 @@ import {
   changeSortType,
   changeSelectedYear,
   changeActiveGenres,
+  getGenres,
 } from '../../actions';
 
 // styles
@@ -22,55 +23,90 @@ import s from './styles/Feed.module.scss';
 
 
 export class Feed extends React.Component {
-
   componentDidMount() {
-    const { location: { search } } = this.props;
-    this.checkCurrentUrl(search);
+    const { location: { search }, genres, getListGenres } = this.props;
+    getListGenres();
+    this.checkCurrentUrl(search, genres);
   }
 
   componentWillReceiveProps(nextProps) {
     const {
       location: { pathname, search },
+      genres,
     } = this.props;
     const current = `${pathname}${search}`;
     const next = `${nextProps.location.pathname}${nextProps.location.search}`;
+    if (genres !== nextProps.genres) {
+      this.checkCurrentUrl(nextProps.location.search, nextProps.genres);
+    }
     if (current === next) {
       return;
     }
-    this.checkCurrentUrl(nextProps.location.search);
+    this.checkCurrentUrl(nextProps.location.search, genres);
   }
 
-  checkCurrentUrl = (search) => {
-    const { getListMovies, changeActivePageAction } = this.props;
+  checkCurrentUrl = (search, genres) => {
+    const {
+      getListMovies,
+      changeActivePageAction,
+      changeSortTypeAction,
+      changeValueYear,
+      changeSelectedGenres,
+    } = this.props;
     const parsed = queryString.parse(search);
     const page = +parsed.page ? +parsed.page : 1;
     const year = parsed.year ? parsed.year : 'none';
     const sort = parsed.sort ? parsed.sort : 'popularity.desc';
-    const genre = parsed.genre ? parsed.genre : null;
+
+    let genre = null;
+    if (parsed.genre) {
+      genre = parsed.genre;
+      const selectGenre = genres.filter(item => (
+        item.id === +genre
+      ));
+      changeSelectedGenres(selectGenre[0]);
+    }
 
     changeActivePageAction(page);
+    changeSortTypeAction(sort);
+    changeValueYear(year);
     getListMovies(page, sort, year, genre);
     document.body.scrollTop = 0;
   };
 
   changePage = (item) => {
-    const { sort, history, changeActivePageAction } = this.props;
+    const {
+      year, sort, history, selectedGenres, changeActivePageAction,
+    } = this.props;
+    const url = selectedGenres
+      ? `?page=${item}&year=${year}&genre=${selectedGenres.id}&sort=${sort}`
+      : `?page=${item}&year=${year}&sort=${sort}`;
 
-    history.push(`?page=${item}&sort=${sort}`);
+    history.push(url);
     changeActivePageAction(item);
   };
 
   changeSort = (sort) => {
-    const { history, changeSortTypeAction } = this.props;
+    const {
+      year, history, selectedGenres, changeSortTypeAction,
+    } = this.props;
+    const url = selectedGenres
+      ? `?page=1&year=${year}&genre=${selectedGenres.id}&sort=${sort}`
+      : `?page=1&year=${year}&sort=${sort}`;
 
-    history.push(`?sort=${sort}`);
+    history.push(url);
     changeSortTypeAction(sort);
   };
 
   changeYear = (year) => {
-    const { history, sort, selectedGenres, changeValueYear } = this.props;
+    const {
+      history, sort, selectedGenres, changeValueYear,
+    } = this.props;
+    const url = selectedGenres
+      ? `?page=1&year=${year}&genre=${selectedGenres.id}&sort=${sort}`
+      : `?page=1&year=${year}&sort=${sort}`;
 
-    history.push(`?page=1&year=${year}&genre=${selectedGenres}&sort=${sort}`);
+    history.push(url);
     changeValueYear(year);
   };
 
@@ -143,6 +179,10 @@ Feed.defaultProps = {
   year: 'none',
   showPreloader: false,
   showError: false,
+  selectedGenres: {
+    id: 1,
+  },
+  genres: [],
   history: {
     push: () => null,
   },
@@ -151,6 +191,7 @@ Feed.defaultProps = {
   getListMovies: () => null,
   changeValueYear: () => null,
   changeSelectedGenres: () => null,
+  getListGenres: () => null,
 };
 
 
@@ -175,10 +216,17 @@ Feed.propTypes = {
     search: PropTypes.string.isRequired,
   }),
   year: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  selectedGenres: PropTypes.string,
+  selectedGenres: PropTypes.shape({
+    id: PropTypes.number,
+  }),
+  genres: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.number,
+  })),
   showPreloader: PropTypes.bool,
   showError: PropTypes.bool,
   changeSelectedGenres: PropTypes.func,
+  getListGenres: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -186,6 +234,7 @@ const mapStateToProps = state => ({
   activePage: state.data.activePage,
   year: state.data.year,
   sort: state.data.sort,
+  genres: state.data.genres,
   selectedGenres: state.data.selectedGenres,
   showPreloader: state.data.showPreloader,
   showError: state.data.showError,
@@ -197,4 +246,5 @@ export default withRouter(connect(mapStateToProps, {
   changeSortTypeAction: changeSortType,
   changeValueYear: changeSelectedYear,
   changeSelectedGenres: changeActiveGenres,
+  getListGenres: getGenres,
 })(Feed));

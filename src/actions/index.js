@@ -80,7 +80,6 @@ const createMovieDbUrl = (queryParams) => {
     Object.keys(queryParams)
       .forEach((paramName) => baseUrl += `&${paramName}=${queryParams[paramName]}`);
   }
-  console.log(baseUrl);
   return baseUrl;
 };
 
@@ -119,10 +118,12 @@ export const getGenres = () => {
 
 export const getDetails = (id) => {
   return function action(dispatch) {
+    dispatch(changeStatusPreloader(true));
     const request = axios.get(`${MOVIE_DB_BASE_URL}/movie/${id}${KEY_LNG_URL}`);
 
     return request.then((response) => {
       dispatch(fetchDetailsPage(response.data));
+      dispatch(changeStatusPreloader(false));
     }).catch((error) => {
       dispatch(showError(true));
       dispatch(changeStatusPreloader(false));

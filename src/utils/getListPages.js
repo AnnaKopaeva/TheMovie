@@ -1,14 +1,15 @@
 export const getListPages = (page, totalPages, separator = '...') => {
   const listPages = [];
+  const minValue = 10;
 
-  if (totalPages < 8) {
-    // if total count of page less 8
-    for (let i = 1; i <= 7; i++) {
+  if (totalPages <= minValue) {
+    // if total count of page less 10
+    for (let i = 1; i <= totalPages; i++) {
       listPages.push(i);
     }
 
-  } else if (page < 5) {
-    // if active page less 5
+  } else if (page < 7) {
+    // if active page less 7
     for (let i = 1; i <= 7; i++) {
       listPages.push(i);
     }
@@ -21,8 +22,13 @@ export const getListPages = (page, totalPages, separator = '...') => {
     }
     listPages.push(
       page + 1, page + 2, page + 3,
-      separator,
-      totalPages - 1, totalPages);
+    );
+    if (totalPages > 10) {
+      listPages.push(
+        separator,
+        totalPages - 1, totalPages,
+      );
+    }
 
   } else if (page < totalPages - 3 && page > totalPages - 8) {
     // if active page less than total count of page minus 8
