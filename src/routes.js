@@ -9,6 +9,10 @@ export const MainRouter = () => (
   <Router>
     <Route path="/" exact component={Feed} />
     <Route path="/details/:id" exact component={Details} />
+
+    {/* for github pages */}
+    <Route path="/theMovie/" exact component={Feed} />
+    <Route path="/theMovie/details/:id" exact component={Details} />
   </Router>
 );
 
